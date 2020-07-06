@@ -527,9 +527,7 @@ USER.SERVERS.forEach(function(server, index) {
    //  (bluetooth uses UART for communication)
    //2. sudo systemctl enable hciuart.service and reboot
    //if those requirements are not met, any usage of noble will throw an error
-   if (hard.BLEMAC === "" || hard.BLEMAC === 0) {
-    console.log(`BLE inactive. Bluetooth in /boot/config.txt disabled, hciuart.service not running, or MAC address not set`);
-   } else {
+   if (hard.BLEMAC) {
     //start BLE scan
     noble.on('stateChange', function (state) {
      if (state === 'poweredOn') {
@@ -546,6 +544,8 @@ USER.SERVERS.forEach(function(server, index) {
       console.log(`BLE update. Name:${peripheral.advertisement.localName} RSSI:${peripheral.rssi} txP:${peripheral.advertisement.txPowerLevel}`);
      }
     });
+   } else {
+    console.log(`BLE inactive. Bluetooth in /boot/config.txt disabled, hciuart.service not running, or MAC address not set`);
    }
 
 
@@ -1168,6 +1168,7 @@ function setRxValues() {
   if(gps.state.track !== null)
    rx.setFloatValue8(6, gps.state.track);
  }
+ rx.setFloatValeur8(4, bleRssi);
 }
 
 setInterval(function() {
