@@ -17,6 +17,7 @@ const GPIO = require("pigpio").Gpio;
 const I2C = require("i2c-bus");
 const PCA9685 = require("pca9685");
 const GPS = require("gps");
+const noble = require('@abandonware/noble');
 
 const FRAME0 = "$".charCodeAt();
 const FRAME1S = "S".charCodeAt();
@@ -86,6 +87,7 @@ let cpuLoad = 0;
 let socTemp = 0;
 let link = 0;
 let rssi = 0;
+let bleRssi = 0;
 
 if(typeof USER.SERVERS === "undefined")
  USER.SERVERS = SYS.SERVERS;
@@ -518,6 +520,34 @@ USER.SERVERS.forEach(function(server, index) {
      });
     }
    }, 200);
+
+
+   //1. make sure bluetooth is enabled in /boot/config.txt . should look like this:
+   //  #dtoverlay=pi3-disable-bt
+   //  (bluetooth uses UART for communication)
+   //2. sudo systemctl enable hciuart.service and reboot
+   //if those requirements are not met, any usage of noble will throw an error
+   if (hard.BLEMAC === "" || hard.BLEMAC === 0) {
+    console.log(`BLE inactive. Bluetooth in /boot/config.txt disabled, hciuart.service not running, or MAC address not set`);
+   } else {
+    //start BLE scan
+    noble.on('stateChange', function (state) {
+     if (state === 'poweredOn') {
+      noble.startScanning([], true) //allows duplicates while scanning
+     } else {
+      noble.stopScanning();
+     }
+    });
+
+    //function constatly searches for the specified BLE MAC address, and captures its RSSI value
+    noble.on('discover', function (peripheral) {
+     if (peripheral.id === hard.BLEMAC.toLowerCase() || peripheral.address === hard.BLEMAC.toLowerCase()) {
+      bleRssi = peripheral.rssi;
+      console.log(`BLE update. Name:${peripheral.advertisement.localName} RSSI:${peripheral.rssi} txP:${peripheral.advertisement.txPowerLevel}`);
+     }
+    });
+   }
+
 
    if(initUart)
     return;
