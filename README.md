@@ -1,3 +1,5 @@
+Fork of the original repo to develop a feature as a non-collaborator
+
 # Make your own Vigibot.com raspberry PI robot
 
 ## Installation on a clean Raspbian Buster Lite
