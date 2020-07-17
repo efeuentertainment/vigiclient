@@ -1,5 +1,25 @@
 Fork of the original repo to develop a feature as a non-collaborator
 
+##required changes from the original repo:
+1) navigate to the vigiclient directory and run:
+```javascript
+npm install @abandonware/noble
+```
+2) make sure bluetooth is enabled in /boot/config.txt . the line should look like this:   
+```bash
+#dtoverlay=pi3-disable-bt
+```
+(bluetooth uses UART for communication)
+
+3) enable the required service
+```bash
+sudo systemctl enable hciuart.service
+```
+4) reboot (starting the hciuart service manually often fails)
+
+if those requirements are not met, any usage of noble will throw an error
+
+
 # Make your own Vigibot.com raspberry PI robot
 
 ## Installation on a clean Raspbian Buster Lite
