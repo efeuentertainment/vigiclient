@@ -19,6 +19,22 @@ sudo systemctl enable hciuart.service
 ```
 5) reboot (starting the hciuart service manually often fails)
 
+6) add a ble rssi bar graph to interface config -> RX -> VALEUR8 -> 4 -> 
+```bash
+,
+      {
+        "NOM": "BLE RSSI",
+        "INIT": -95,
+        "ECHELLEMIN": -95,
+        "ECHELLEMAX": -55,
+        "MIN": -95,
+        "MAX": -55,
+        "SIGNE": true,
+        "NBCHIFFRES": 0,
+        "UNITE": " dBm",
+        "AFFICHAGE": "Barre"
+      }
+```
 if those requirements are not met, any usage of noble will throw an error
 
 
