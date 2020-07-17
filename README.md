@@ -1,21 +1,23 @@
 Fork of the original repo to develop a feature as a non-collaborator
 
 ## required changes from the original repo:
-1) navigate to the vigiclient directory and run:
+1) pull / download this repo
+
+2) navigate to the vigiclient directory and run:
 ```javascript
 npm install @abandonware/noble
 ```
-2) make sure bluetooth is enabled in /boot/config.txt . the line should look like this:   
+3) make sure bluetooth is enabled in /boot/config.txt . the line should look like this:   
 ```bash
 #dtoverlay=pi3-disable-bt
 ```
 (bluetooth uses UART for communication)
 
-3) enable the required service
+4) enable the required service
 ```bash
 sudo systemctl enable hciuart.service
 ```
-4) reboot (starting the hciuart service manually often fails)
+5) reboot (starting the hciuart service manually often fails)
 
 if those requirements are not met, any usage of noble will throw an error
 
