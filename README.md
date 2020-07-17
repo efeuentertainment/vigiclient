@@ -1,6 +1,6 @@
 Fork of the original repo to develop a feature as a non-collaborator
 
-##required changes from the original repo:
+## required changes from the original repo:
 1) navigate to the vigiclient directory and run:
 ```javascript
 npm install @abandonware/noble
