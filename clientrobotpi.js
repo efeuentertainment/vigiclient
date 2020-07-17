@@ -17,7 +17,9 @@ const GPIO = require("pigpio").Gpio;
 const I2C = require("i2c-bus");
 const PCA9685 = require("pca9685");
 const GPS = require("gps");
+
 const noble = require('@abandonware/noble');
+const BLEMAC = "e6:4e:57:09:74:e4";
 
 const FRAME0 = "$".charCodeAt();
 const FRAME1S = "S".charCodeAt();
@@ -87,7 +89,7 @@ let cpuLoad = 0;
 let socTemp = 0;
 let link = 0;
 let rssi = 0;
-let bleRssi = 0;
+let bleRssi = -128;
 
 if(typeof USER.SERVERS === "undefined")
  USER.SERVERS = SYS.SERVERS;
@@ -527,7 +529,7 @@ USER.SERVERS.forEach(function(server, index) {
    //  (bluetooth uses UART for communication)
    //2. sudo systemctl enable hciuart.service and reboot
    //if those requirements are not met, any usage of noble will throw an error
-   if (hard.BLEMAC) {
+   if (BLEMAC) {
     //start BLE scan
     noble.on('stateChange', function (state) {
      if (state === 'poweredOn') {
@@ -539,7 +541,7 @@ USER.SERVERS.forEach(function(server, index) {
 
     //function constatly searches for the specified BLE MAC address, and captures its RSSI value
     noble.on('discover', function (peripheral) {
-     if (peripheral.id === hard.BLEMAC.toLowerCase() || peripheral.address === hard.BLEMAC.toLowerCase()) {
+     if (peripheral.id === BLEMAC.toLowerCase() || peripheral.address === BLEMAC.toLowerCase()) {
       bleRssi = peripheral.rssi;
       console.log(`BLE update. Name:${peripheral.advertisement.localName} RSSI:${peripheral.rssi} txP:${peripheral.advertisement.txPowerLevel}`);
      }
