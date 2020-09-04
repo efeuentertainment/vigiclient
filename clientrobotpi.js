@@ -543,11 +543,11 @@ USER.SERVERS.forEach(function(server, index) {
     noble.on('discover', function (peripheral) {
      if (peripheral.id === BLEMAC.toLowerCase() || peripheral.address === BLEMAC.toLowerCase()) {
       bleRssi = peripheral.rssi;
-      console.log(`BLE update. Name:${peripheral.advertisement.localName} RSSI:${peripheral.rssi} txP:${peripheral.advertisement.txPowerLevel}`);
+      console.info(`BLE update. Name:${peripheral.advertisement.localName} RSSI:${peripheral.rssi} txP:${peripheral.advertisement.txPowerLevel}`);
      }
     });
    } else {
-    console.log(`BLE inactive. Bluetooth in /boot/config.txt disabled, hciuart.service not running, or MAC address not set`);
+    console.info(`BLE inactive. Bluetooth in /boot/config.txt disabled, hciuart.service not running, or MAC address not set`);
    }
 
 
