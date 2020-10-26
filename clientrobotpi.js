@@ -1170,7 +1170,7 @@ function setRxValues() {
   if(gps.state.track !== null)
    rx.setFloatValue8(6, gps.state.track);
  }
- rx.setFloatValeur8(4, bleRssi);
+ rx.setFloatValue8(4, bleRssi);
 }
 
 setInterval(function() {
